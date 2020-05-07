@@ -1,0 +1,20 @@
+.brand-font {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.shopping-cart {
+  min-width: 450px;
+}
+
+.shoppingcart-image-width {
+  width: 90px;
+}
+
+.HistoricOrder {
+  margin-bottom: 20px;
+  border: solid black 2px;
+}
+
+.bild {
+  width: 10vw;
+}
