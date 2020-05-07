@@ -41,6 +41,7 @@ exports.getProductById = (req, res) => {
 exports.addOrder = (req, res) => {
   if (req.user.isAuthenticated) {
     try {
+      // req.body.products = []
       for (current of req.body) {
         let order = new Order({
           _id: new mongoose.Types.ObjectId(),

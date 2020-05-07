@@ -10,4 +10,12 @@ const orderSchema = mongoose.Schema({
   orderActive: {type: Boolean},
 });
 
+// const orderSchema = mongoose.Schema({
+//   _id: mongoose.Schema.Types.ObjectId,
+//   ordernumber: {type: Number},
+//   userId: {type: String},
+//   products: {type: Array},
+//   orderActive: {type: Boolean},
+// });
+
 module.exports = mongoose.model("Order", orderSchema);
