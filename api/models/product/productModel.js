@@ -41,19 +41,18 @@ exports.getProductById = (req, res) => {
 exports.addOrder = (req, res) => {
   if (req.user.isAuthenticated) {
     try {
-      for (current of req.body) {
-        let order = new Order({
-          _id: new mongoose.Types.ObjectId(),
-          name: current.name,
-          quantity: current.quantity,
-          ordernumber: current.ordernumber,
-          userId: current.userId,
-          image: current.image,
-          orderActive: current.orderActive,
-        });
+      // req.body.products = []
 
-        order.save();
-      }
+      let order = new Order({
+        _id: new mongoose.Types.ObjectId(),
+        isActive: req.body.isActive,
+        products: req.body.products,
+        ordernumber: req.body.ordernumber,
+        userId: req.body.userId,
+      });
+
+      order.save();
+
       return res.status(200).json();
     } catch {
       return res.status(400).json();

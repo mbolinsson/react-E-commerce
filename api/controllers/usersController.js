@@ -50,31 +50,31 @@ route.get("/", (req, res) => {
   });
 });
 
-function orderOrders(orders) {
-  const orderedOrders = [];
+// function orderOrders(orders) {
+//   const orderedOrders = [];
 
-  orders.forEach((order) => {
-    const existingOrder = orderedOrders.find((oo) => oo.ordernumber === order.ordernumber);
+//   orders.forEach((order) => {
+//     const existingOrder = orderedOrders.find((oo) => oo.ordernumber === order.ordernumber);
 
-    if (existingOrder) {
-      existingOrder.products.push(order);
-    } else {
-      orderedOrders.push({
-        ordernumber: order.ordernumber,
-        products: [order],
-      });
-    }
-  });
+//     if (existingOrder) {
+//       existingOrder.products.push(order);
+//     } else {
+//       orderedOrders.push({
+//         ordernumber: order.ordernumber,
+//         products: [order],
+//       });
+//     }
+//   });
 
-  return orderedOrders;
-}
+//   return orderedOrders;
+// }
 
 // Order History
 route.get("/orderhistory", (req, res) => {
   if (req.user.isAuthenticated) {
     Order.find({userId: req.user.id}).then((orders) => {
-      const orderedOrders = orderOrders(orders);
-      res.send(orderedOrders);
+      // const orderedOrders = orderOrders(orders);
+      res.send(orders);
     });
   } else {
     res.json({message: "You have to be logged in to see your order history."});
@@ -84,10 +84,19 @@ route.get("/orderhistory", (req, res) => {
 // Admin Order History
 route.get("/allorders", (req, res) => {
   if (req.user.isAuthenticated && req.user.id === "5eb42cb5139b0f541ac61f9f") {
-    console.log("wow");
     Order.find({}).then((orders) => {
-      const orderedOrders = orderOrders(orders);
-      res.send(orderedOrders);
+      res.send(orders);
+    });
+  } else {
+    res.json({message: "You have to be logged in to see your order history."});
+  }
+});
+
+// Admin get all orders
+route.get("/allusers", (req, res) => {
+  if (req.user.isAuthenticated && req.user.id === "5eb42cb5139b0f541ac61f9f") {
+    User.find({}).then((users) => {
+      res.send(users);
     });
   } else {
     res.json({message: "You have to be logged in to see your order history."});
@@ -98,6 +107,30 @@ route.get("/allorders", (req, res) => {
 route.get("/logout", (req, res) => {
   req.logout();
   console.log("You are logged out");
+});
+
+// Admin Order-IsActive
+route.patch("/orderisactive", (req, res) => {
+  if (req.user.isAuthenticated && req.user.id === "5eb42cb5139b0f541ac61f9f") {
+    console.log(req.body.ordernumber);
+    const _id = req.body.ordernumber;
+    Order.updateOne({_id}, {isActive: false}).then(() => {
+      res.send("updated");
+    });
+  } else {
+    res.json({message: "??????????????????????"});
+  }
+});
+
+// Admin delete User
+route.delete("/deleteuser", (req, res) => {
+  if (req.user.isAuthenticated && req.user.id === "5eb42cb5139b0f541ac61f9f") {
+    User.deleteOne({_id: req.body.usersid}).then(() => {
+      res.send({deleted: req.body.usersid});
+    });
+  } else {
+    res.json({message: "??????????????????????"});
+  }
 });
 
 module.exports = route;

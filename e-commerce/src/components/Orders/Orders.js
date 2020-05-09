@@ -1,24 +1,11 @@
 import React from "react";
 import "../../App.css";
-import {useDispatch} from "react-redux";
-import {orderIsActive} from "../../store/actions/userActions";
 
-export default function AllOrders({order}) {
-  const dispatch = useDispatch();
-  const OrderIsActiveFalse = () => {
-    console.log(1);
-    dispatch(orderIsActive(order._id));
-  };
-
-  let activ = <button onClick={OrderIsActiveFalse}>Slutför denna order</button>;
-
-  if (!order.isActive) {
-    activ = "Ordern är slutförd ✓";
-  }
-
+export default function Orders({order}) {
   return (
     <div className="container HistoricOrder">
-      <h4>Ordernumber: {order._id}</h4>
+      <h4>Ordernummer: {order._id}</h4>
+
       {order.products.map((product) => (
         <div key={product.id}>
           <div className="cart-item">
@@ -40,7 +27,6 @@ export default function AllOrders({order}) {
           </div>
         </div>
       ))}
-      {activ}
     </div>
   );
 }

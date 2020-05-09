@@ -30,21 +30,27 @@ export const countItems = () => {
 
 export const placeOrder = (cart) => {
   return (dispatch) => {
-    console.log(cart);
-    let order = [];
+    let products = [];
     let ordernumber = Date.now();
     let userId = window.localStorage.getItem("userId");
     let token = window.localStorage.getItem("token");
     cart.forEach((item) => {
-      order.push({
+      products.push({
         name: item.name,
         quantity: item.quantity,
-        ordernumber,
-        userId,
         image: item.image,
-        orderActive: true,
+        id: item._id,
       });
     });
+
+    const order = {
+      ordernumber,
+      isActive: true,
+      userId,
+      products,
+    };
+
+    console.log(order);
 
     axios
       .post("http://localhost:3300/api/products/order", order, {

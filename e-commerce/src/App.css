@@ -18,3 +18,12 @@
 .bild {
   width: 10vw;
 }
+
+.cart {
+  max-width: 10px;
+}
+
+.checkout {
+  margin-top: 70px;
+  max-width: 600px;
+}
