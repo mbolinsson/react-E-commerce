@@ -28,7 +28,6 @@ app.use(bodyParser.json());
 
 // authentication
 app.use((req, res, next) => {
-  console.log(req);
   const token = req.headers["x-access-token"];
   req.user = {
     isAuthenticated: false,

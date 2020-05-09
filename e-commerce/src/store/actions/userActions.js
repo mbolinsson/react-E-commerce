@@ -14,7 +14,9 @@ export const registerUser = (formData) => {
 export const signInUser = (formData) => {
   return (dispatch) => {
     axios.post("http://localhost:3300/api/users/login", formData).then((res) => {
+      console.log(res.data.user._id);
       const userId = res.data.user._id;
+
       const token = res.data.token;
       localStorage.setItem("userId", userId);
       localStorage.setItem("token", token);
@@ -31,30 +33,55 @@ export const setUserId = (userId) => {
   };
 };
 
-export const getHistoricOrders = () => {
+export const getUserOrders = () => {
   return (dispatch) => {
     const token = localStorage.getItem("token");
     axios
       .get("http://localhost:3300/api/users/orderhistory", {headers: {"x-access-token": token}})
       .then((res) => {
         if (res !== null) {
-          dispatch(setHistoricOrders(res.data));
+          dispatch(setUserOrders(res.data));
         }
       })
       .catch((error) => console.log(error));
   };
 };
 
-export const setHistoricOrders = (historicOrders) => {
+export const setUserOrders = (userOrders) => {
   return {
-    type: types().user.setHistoricOrders,
-    payload: historicOrders,
+    type: types().user.setUserOrders,
+    payload: userOrders,
   };
 };
 
 export const signOutUser = () => {
   return {
     type: types().user.signOutUser,
+  };
+};
+
+//Admin
+export const orderIsActive = (ordernumber) => {
+  return (dispatch) => {
+    let token = window.localStorage.getItem("token");
+
+    axios
+      .patch(
+        "http://localhost:3300/api/users/orderisactive",
+        {ordernumber},
+        {
+          headers: {
+            "x-access-token": token,
+          },
+        }
+      )
+      .then(function (response) {
+        console.log(response);
+        dispatch(getAllOrders());
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 };
 
@@ -79,5 +106,49 @@ export const setAllOrders = (allOrders) => {
   return {
     type: types().user.setAllOrders,
     payload: allOrders,
+  };
+};
+
+//Admin
+export const getAllUsers = () => {
+  return (dispatch) => {
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId");
+    axios
+      .get("http://localhost:3300/api/users/allusers", {headers: {"x-access-token": token, userId: userId}})
+      .then((res) => {
+        if (res !== null) {
+          dispatch(setAllUsers(res.data));
+        }
+      })
+      .catch((error) => console.log(error));
+  };
+};
+
+//Admin
+export const setAllUsers = (allUsers) => {
+  return {
+    type: types().user.setAllUsers,
+    payload: allUsers,
+  };
+};
+
+//Admin
+export const eraseUser = (usersid) => {
+  return (dispatch) => {
+    let token = window.localStorage.getItem("token");
+    const userId = localStorage.getItem("userId");
+    console.log(usersid);
+    console.log(userId);
+
+    axios
+      .delete("http://localhost:3300/api/users/deleteuser", {headers: {"x-access-token": token, userId: userId}, data: {usersid}})
+      .then((res) => {
+        console.log(res);
+        dispatch(getAllUsers());
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 };

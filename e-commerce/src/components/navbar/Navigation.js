@@ -3,9 +3,10 @@ import {Link} from "react-router-dom";
 import "../../App.css";
 import ShoppingCart from "../shoppingcart/ShoppingCart";
 import {useSelector} from "react-redux";
-import {MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBIcon} from "mdbreact";
+import {MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBIcon, MDBDropdownItem} from "mdbreact";
 import {useDispatch} from "react-redux";
 import {signOutUser} from "../../store/actions/userActions";
+import OrdersDropDown from "./OrdersDropDown";
 
 export default function Navigation() {
   const dispatch = useDispatch();
@@ -47,10 +48,9 @@ export default function Navigation() {
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent-333">
           <ul className="navbar-nav mr-auto">
-            <li className="nav-item active">
-              <Link className="nav-link" to="/products">
+            <li className="nav-item">
+              <Link className="nav-link waves-effect waves-light" to="/products">
                 Produkter
-                <span className="sr-only">(current)</span>
               </Link>
             </li>
           </ul>
@@ -75,19 +75,40 @@ export default function Navigation() {
             </li>
             <li className="nav-item">{userStatus}</li>
             <li className="nav-item">
-              <Link to="/historicOrders" className="nav-link waves-effect waves-light">
-                Historik
-              </Link>
-            </li>
-            <li className="nav-item">
               <Link to="/register" className="nav-link waves-effect waves-light">
                 Registrera
               </Link>
             </li>
+
+            <li className="nav-item mr-5">
+              <MDBDropdown>
+                <MDBDropdownToggle nav caret color="grey">
+                  Ordrar
+                </MDBDropdownToggle>
+                <MDBDropdownMenu basic>
+                  <MDBDropdownItem>
+                    <Link to="/activeOrders">Aktiva</Link>
+                  </MDBDropdownItem>
+                  <MDBDropdownItem>
+                    <Link to="/historicOrders">Historiska</Link>
+                  </MDBDropdownItem>
+                </MDBDropdownMenu>
+              </MDBDropdown>
+            </li>
             <li className="nav-item">
-              <Link to="/admin" className="nav-link waves-effect waves-light">
-                <i className="fas fa-users-cog"></i>
-              </Link>
+              <MDBDropdown>
+                <MDBDropdownToggle nav caret color="grey">
+                  Admin <i class="fas fa-wrench"></i>
+                </MDBDropdownToggle>
+                <MDBDropdownMenu basic>
+                  <MDBDropdownItem>
+                    <Link to="/adminorders">Ordrar</Link>
+                  </MDBDropdownItem>
+                  <MDBDropdownItem>
+                    <Link to="/adminusers">Användare</Link>
+                  </MDBDropdownItem>
+                </MDBDropdownMenu>
+              </MDBDropdown>
             </li>
           </ul>
         </div>
